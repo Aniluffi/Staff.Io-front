@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Staff.io Frontend
 
-## Getting Started
+Веб-приложение для управления сотрудниками, профилями, аналитикой и расходами компании.
+Проект построен на **Next.js (App Router)**, **TypeScript** и **React**.
 
-First, run the development server:
+## Возможности
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Аутентификация: регистрация владельца компании, вход и выход.
+- Ролевая модель доступа (Owner/Admin) и защищённые маршруты.
+- Профиль пользователя с редактированием данных и документами.
+- Раздел сотрудников (список, карточки, детали).
+- Раздел аналитики за выбранный период.
+- Раздел расходов и сводных финансовых данных.
+- Раздел настроек с приглашением сотрудника.
+
+## Технологии
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Fluent UI + Heroicons
+
+## Требования
+
+- Node.js 20+
+- npm 10+
+- Запущенный backend API на `http://localhost:53766`
+
+> В текущей реализации URL backend задан напрямую в файлах `src/requests/*`.
+
+## Структура проекта
+
+```text
+src/
+  app/                # Страницы (App Router), ProtectedRoute, глобальные провайдеры
+  components/         # UI-компоненты и блоки страниц
+  contexts/           # Контексты (например AuthContext)
+  requests/           # Клиентские запросы к backend API
+  types/              # TypeScript-модели и перечисления
+public/               # Статические файлы
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Роуты приложения
+- `/login` — вход
+- `/register` — регистрация владельца
+- `/dashboard` — профиль
+- `/employees` — сотрудники
+- `/analytics` — аналитика
+- `/expenses` — расходы
+- `/settings` — настройки
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+  ## API и авторизация
+  Клиент общается с backend по HTTP через `fetch` с `credentials: "include"`, то есть авторизация основана на cookie-сессии.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+  Основные модули запросов:
+  - `Authorization` — вход/выход/регистрация/текущий пользователь
+- `Employees` — список, детали, текущий профиль
+- `Admin` — управление сотрудниками и правами
+- `Analytics` — аналитика по диапазону дат
+- `Expenses` — финансовые данные
+- `History` — история изменений
 
 ## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Главная страница `/` редиректит на `/login`.
+- Навигация в sidebar фильтруется по роли пользователя.
+- Для корректной работы авторизации backend должен разрешать cookie и CORS для frontend-домена.
